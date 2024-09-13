@@ -90,6 +90,10 @@ abstract class AffectedModuleDetector {
      */
     abstract fun shouldInclude(project: Project): Boolean
 
+    abstract fun shouldInclude(task: Task): Boolean
+
+    abstract fun shouldInclude(project: String): Boolean
+
     /**
      * Returns true if at least one project has been affected
      *
@@ -240,10 +244,9 @@ abstract class AffectedModuleDetector {
         @Throws(GradleException::class)
         @JvmStatic
         fun configureTaskGuard(task: Task) {
+            val project = getOrThrow(task.project)
             task.onlyIf {
-                getOrThrow(
-                    task.project
-                ).shouldInclude(task.project)
+                project.shouldInclude(task)
             }
         }
 
@@ -302,6 +305,10 @@ private class AcceptAll(
         logger?.info("[AcceptAll] wrapper returned $wrappedResult but I'll return true")
         return true
     }
+
+    override fun shouldInclude(project: String): Boolean = true
+
+    override fun shouldInclude(task: Task): Boolean = true
 
     override fun hasAffectedProjects() = true
 
@@ -385,6 +392,28 @@ class AffectedModuleDetectorImpl constructor(
         logger?.info("checking whether I should include ${project.path} and my answer is $shouldInclude")
 
         return shouldInclude
+    }
+
+    override fun shouldInclude(task: Task): Boolean {
+        val projectPath = getProjectPathFromTaskPath(task.path)
+        val include = shouldInclude(projectPath)
+        val inclusionVerb = if (include) "Including" else "Excluding"
+        logger?.info("$inclusionVerb task ${task.path}")
+        return include
+    }
+
+    override fun shouldInclude(project: String): Boolean {
+        return if (project == ":") {
+            true
+        } else {
+            affectedProjects.contains(ProjectPath(project))
+        }
+    }
+
+    fun getProjectPathFromTaskPath(taskPath: String): String {
+        val lastColonIndex = taskPath.lastIndexOf(":")
+        val projectPath = taskPath.substring(0, lastColonIndex)
+        return projectPath
     }
 
     override fun hasAffectedProjects() = affectedProjects.isNotEmpty()
