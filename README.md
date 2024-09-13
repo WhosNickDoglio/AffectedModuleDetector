@@ -48,7 +48,7 @@ pluginManagement {
   }
 }
 
-// root build.gradle(.kts)
+// root dead.gradle(.kts)
 plugins {
   id("com.dropbox.affectedmoduledetector") version "<latest-version>"
 }

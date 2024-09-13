@@ -1,10 +1,34 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
+    id("com.dropbox.affectedmoduledetector") version "0.3.1"
+    alias(libs.plugins.andrid.app) apply false
+    alias(libs.plugins.andrid.library) apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.publish)
     id "jacoco"
+}
+
+affectedModuleDetector {
+    baseDir = "${project.rootDir}"
+    pathsAffectingAllModules = [
+            "buildSrc/"
+    ]
+    specifiedBranch = "origin/main"
+    compareFrom = "SpecifiedBranchCommitMergeBase"
+    customTasks = [
+            new com.dropbox.affectedmoduledetector.AffectedModuleConfiguration.CustomTask(
+                    "runDetektByImpact",
+                    "detekt",
+                    "Run static analysis tool by Impact analysis"
+            )
+    ]
+    logFolder = "${project.rootDir}"
+    excludedModules = [
+            "sample-util"
+    ]
 }
 
 allprojects {

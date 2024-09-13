@@ -14,3 +14,7 @@ dependencyResolutionManagement {
 }
 
 include ':affectedmoduledetector'
+include ':sample:app'
+include ':sample:core'
+include ':sample:util'
+include ':sample:jvm-module'
