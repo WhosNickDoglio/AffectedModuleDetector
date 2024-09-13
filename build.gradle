@@ -2,6 +2,7 @@ import com.dropbox.affectedmoduledetector.AffectedModuleConfiguration
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
+    // TODO
     id("com.dropbox.affectedmoduledetector") version "0.3.1"
     alias(libs.plugins.andrid.app) apply false
     alias(libs.plugins.andrid.library) apply false
@@ -14,7 +15,7 @@ plugins {
 }
 
 affectedModuleDetector {
-    baseDir = "${project.rootDir}"
+    baseDir = "${rootDir}"
     pathsAffectingAllModules = [
             "sample/build-logic/"
     ]
@@ -27,7 +28,7 @@ affectedModuleDetector {
                     "Run static analysis tool by Impact analysis"
             )
     ]
-    logFolder = "${project.rootDir}"
+    logFolder = "${rootDir}"
     excludedModules = [
             "sample/util"
     ]
