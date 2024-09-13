@@ -92,7 +92,6 @@ class AffectedModuleDetectorPlugin : Plugin<Project> {
             rootProject.tasks.register(taskType.commandByImpact) { task ->
                 task.group = CUSTOM_TASK_GROUP_NAME
                 task.description = taskType.taskDescription
-                disableConfigCache(task)
 
                 rootProject.subprojects { project ->
                     pluginIds.forEach { pluginId ->
@@ -133,7 +132,6 @@ class AffectedModuleDetectorPlugin : Plugin<Project> {
         rootProject.tasks.register(taskType.commandByImpact) { task ->
             task.group = groupName
             task.description = taskType.taskDescription
-            disableConfigCache(task)
 
             rootProject.subprojects { project ->
                 pluginIds.forEach { pluginId ->
@@ -146,13 +144,6 @@ class AffectedModuleDetectorPlugin : Plugin<Project> {
                     }
                 }
             }
-        }
-    }
-
-    @Suppress("UnstableApiUsage")
-    private fun disableConfigCache(task: Task) {
-        if (GradleVersion.current() >= GradleVersion.version("7.4")) {
-            task.notCompatibleWithConfigurationCache("AMD requires knowledge of what has changed in the file system so we can not cache those values (https://github.com/dropbox/AffectedModuleDetector/issues/150)")
         }
     }
 

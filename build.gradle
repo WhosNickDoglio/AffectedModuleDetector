@@ -1,3 +1,5 @@
+import com.dropbox.affectedmoduledetector.AffectedModuleConfiguration
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id("com.dropbox.affectedmoduledetector") version "0.3.1"
@@ -19,7 +21,7 @@ affectedModuleDetector {
     specifiedBranch = "origin/main"
     compareFrom = "SpecifiedBranchCommitMergeBase"
     customTasks = [
-            new com.dropbox.affectedmoduledetector.AffectedModuleConfiguration.CustomTask(
+            new AffectedModuleConfiguration.CustomTask(
                     "runDetektByImpact",
                     "detekt",
                     "Run static analysis tool by Impact analysis"
