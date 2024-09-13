@@ -1,5 +1,4 @@
 pluginManagement {
-    includeBuild("sample/build-logic")
     repositories {
         google()
         mavenCentral()
@@ -11,11 +10,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
+    }
+
+    versionCatalogs {
+        create("libs") {
+            from(files("../../gradle/libs.versions.toml"))
+        }
     }
 }
-
-include ':affectedmoduledetector'
-include ':sample:app'
-include ':sample:core'
-include ':sample:util'
-include ':sample:jvm-module'

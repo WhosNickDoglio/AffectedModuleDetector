@@ -14,7 +14,7 @@ plugins {
 affectedModuleDetector {
     baseDir = "${project.rootDir}"
     pathsAffectingAllModules = [
-            "buildSrc/"
+            "sample/build-logic/"
     ]
     specifiedBranch = "origin/main"
     compareFrom = "SpecifiedBranchCommitMergeBase"
@@ -27,7 +27,7 @@ affectedModuleDetector {
     ]
     logFolder = "${project.rootDir}"
     excludedModules = [
-            "sample-util"
+            "sample/util"
     ]
 }
 
